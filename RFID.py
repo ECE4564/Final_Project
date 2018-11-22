@@ -6,12 +6,15 @@
 ##                  and handling the RFID reader.  Sends RFID tag to the 
 ##                  next available Service Pi through RabbitMQ and receives
 ##                  the user's name that corresponds to the RFID tag.
+
+
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 
 import MFRC522
+import RPi.GPIO as GPIO
 
 def read():
     # Turn on LED with saved intensity values
@@ -51,7 +54,7 @@ while(True):
 
         driver.get("http://localhost:5000/login?color=blue&name="+tag+"&seat=B4")
 
-    sleep(10)
+        sleep(10)
 
 driver.close()
 
