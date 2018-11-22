@@ -23,7 +23,7 @@ MIFAREReader = MFRC522.MFRC522()
 chrome_options = Options()
 chrome_options.add_argument("--disable-infobars")
 
-driver = webdriver.Chrome(executable_path="C:\\Users\\Michael\\Documents\\chromedriver.exe", chrome_options=chrome_options)
+driver = webdriver.Chrome(executable_path="/usr/lib/chromium-browser/chromedriver", chrome_options=chrome_options)
 driver.fullscreen_window()
 
 # Open initial welcome webpage
