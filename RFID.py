@@ -16,9 +16,31 @@ from selenium.webdriver.chrome.options import Options
 import MFRC522
 import RPi.GPIO as GPIO
 
+# Capture SIGINT for cleanup when the script is aborted
+def end_read(signal,frame):
+    global continue_reading
+    print "Ctrl+C captured, ending read."
+    continue_reading = False
+    GPIO.cleanup()
+
 def read():
-    # Turn on LED with saved intensity values
-    print('Hello')
+    while(True):
+        # Scan for cards    
+        (status,TagType) = MIFAREReader.MFRC522_Request(MIFAREReader.PICC_REQIDL)
+
+        if status == MIFAREReader.MI_OK:
+            print("Found Card...")
+
+        # Get the UID of the card
+        (status,uid) = MIFAREReader.MFRC522_Anticoll()
+
+        # If a card is found
+        if status == MIFAREReader.MI_OK:
+            # Put RFID tag together
+            tag = str(uid[0]) + '.' + str(uid[1]) + '.' + str(uid[2]) + '.' + str(uid[3])
+
+            print("Card ID: " + tag)
+            return tag
 
 # Create an object of the class MFRC522
 MIFAREReader = MFRC522.MFRC522()
@@ -33,28 +55,10 @@ driver.fullscreen_window()
 driver.get("http://localhost:5000/")
 
 while(True):
-#driver.get("http://localhost:5000/")
-#driver.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 't')
-#sleep(5)
-    # Scan for cards    
-    (status,TagType) = MIFAREReader.MFRC522_Request(MIFAREReader.PICC_REQIDL)
+    # Get the RFID tag when one appears
+    tag = read(MIFAREReader)
 
-    if status == MIFAREReader.MI_OK:
-        print("Found Card...")
-
-    # Get the UID of the card
-    (status,uid) = MIFAREReader.MFRC522_Anticoll()
-
-    # If a card is found
-    if status == MIFAREReader.MI_OK:
-        # Put RFID tag together
-        tag = str(uid[0]) + '.' + str(uid[1]) + '.' + str(uid[2]) + '.' + str(uid[3])
-
-        print("Card ID: " + tag)
-
-        driver.get("http://localhost:5000/login?color=blue&name="+tag+"&seat=B4")
-
-        sleep(10)
+    driver.get("http://localhost:5000/login?color=blue&name="+tag+"&seat=B4")
 
 driver.close()
 
