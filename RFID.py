@@ -16,10 +16,12 @@ from selenium.webdriver.chrome.options import Options
 import MFRC522
 import RPi.GPIO as GPIO
 
+continue_reading = True
+
 # Capture SIGINT for cleanup when the script is aborted
 def end_read(signal,frame):
     global continue_reading
-    print "Ctrl+C captured, ending read."
+    print("Ctrl+C captured, ending read.")
     continue_reading = False
     GPIO.cleanup()
 
@@ -54,7 +56,7 @@ driver.fullscreen_window()
 # Open initial welcome webpage
 driver.get("http://localhost:5000/")
 
-while(True):
+while(continue_reading):
     # Get the RFID tag when one appears
     tag = read(MIFAREReader)
 
