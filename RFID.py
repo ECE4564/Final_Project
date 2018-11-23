@@ -26,6 +26,8 @@ def end_read(signal,frame):
     GPIO.cleanup()
 
 def read():
+    global MIFAREReader
+    
     while(True):
         # Scan for cards    
         (status,TagType) = MIFAREReader.MFRC522_Request(MIFAREReader.PICC_REQIDL)
@@ -58,7 +60,7 @@ driver.get("http://localhost:5000/")
 
 while(continue_reading):
     # Get the RFID tag when one appears
-    tag = read(MIFAREReader)
+    tag = read()
 
     driver.get("http://localhost:5000/login?color=blue&name="+tag+"&seat=B4")
 
