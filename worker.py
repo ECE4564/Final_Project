@@ -16,6 +16,6 @@ def callback(ch, method, properties, body):
 
 channel.basic_qos(prefetch_count=1)
 channel.basic_consume(callback,
-                      queue='task_queue')
+                      queue='RFID_Queue')
 
 channel.start_consuming()
