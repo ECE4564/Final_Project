@@ -71,7 +71,7 @@ while(continue_reading):
     tag = read()
 
     channel.basic_publish(exchange='',
-                          routing_key='RFID-Queue',
+                          routing_key='RFID_Queue',
                           body=tag,
                           properties=pika.BasicProperties(
                           delivery_mode = 2, # make message persistent
