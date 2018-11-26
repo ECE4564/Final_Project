@@ -7,15 +7,23 @@
 ##                  next available Service Pi through RabbitMQ and receives
 ##                  the user's name that corresponds to the RFID tag.
 
-
-from time import sleep
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
-
+import pika
+import sys
 import MFRC522
 import RPi.GPIO as GPIO
 
+from time import sleep
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from time import sleep, gmtime, strftime
+
+# Initialize RabbitMQ queue connection
+connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+channel = connection.channel()
+
+channel.queue_declare(queue='task_queue', durable=True)
+
+# Used to stop the Pi from trying to read RFID cards
 continue_reading = True
 
 # Capture SIGINT for cleanup when the script is aborted
@@ -62,7 +70,16 @@ while(continue_reading):
     # Get the RFID tag when one appears
     tag = read()
 
+    channel.basic_publish(exchange='',
+                          routing_key='RFID-Queue',
+                          body=tag,
+                          properties=pika.BasicProperties(
+                          delivery_mode = 2, # make message persistent
+                        ))
+    print(strftime("[%H:%M:%S] ", gmtime()) + " [x] Sent " + tag)
+
     driver.get("http://localhost:5000/login?color=blue&name="+tag+"&seat=B4")
 
+connection.close()
 driver.close()
 
