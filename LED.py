@@ -14,50 +14,33 @@ GPIO.setup(green,GPIO.OUT)
 GPIO.setup(blue,GPIO.OUT)
 
 class LED_random:
-    def __init__(self, size, stop):
-        self.size = size
-        self.stop = stop
+    def __init__(self, size, stop,color):
+        self.color = color
 
-    def showVarieties(self):
-        ones = int(self.size%10)
-        tens = int((self.size%100 - ones)/10)
-        hundreds = int((self.size - (ones + tens*10))/100)
-
-        for i in range(hundreds):
-            self.redBlink()
-
-        for i in range(tens):
-            self.greenBlink()
-
-        for i in range(ones):
-            self.blueBlink()
-
-    def flashLED(self,event):
-        if event is not False:
-            color = randint(0,2)
-            start = time.time()
+    def flashLED(self):
+        start = time.time()
             # time.time() returns the number of seconds since the unix epoch.
             # To find the time since the start of the function, we get the start
             # value, then subtract the start from all following values.
-            time.clock()    
+        time.clock()    
             # When you first call time.clock(), it just starts measuring
             # process time. There is no point assigning it to a variable, or
             # subtracting the first value of time.clock() from anything.
-            elapsed = 0
-            while elapsed < 20:
-                elapsed = time.time() - start
-                if color is 0:
-                    self.redBlink()
-                    time.sleep(1)
-                    self.turnOff()
-                elif color is 1:
-                    self.greenBlink()
-                    time.sleep(1)
-                    self.turnOff()
-                elif color is 2:
-                    self.blueBlink()
-                    time.sleep(1)
-                    self.turnOff()
+        elapsed = 0
+        while elapsed < 20:
+            elapsed = time.time() - start
+            if self.color is "red":
+                self.redBlink()
+                time.sleep(1)
+                self.turnOff()
+            elif self.color is "green":
+                self.greenBlink()
+                time.sleep(1)
+                self.turnOff()
+            elif self.color is "blue":
+                self.blueBlink()
+                time.sleep(1)
+                self.turnOff()
 
 
     def redBlink(self):
