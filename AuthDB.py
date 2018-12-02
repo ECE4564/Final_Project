@@ -8,7 +8,7 @@ class AuthDB:
         self.client = pymongo.MongoClient()
         self.db = self.client.db
         # naming the collection
-        self.collection = self.db.auth
+        self.collection = self.db.auths
 
     def insert(self, data):
         try:
@@ -21,7 +21,7 @@ class AuthDB:
         try:
             res = self.collection.find_one(user)  # attempt to find data in db
             # ensure all aspects of login information match
-            if res['username'] == user['username'] and res['password'] == user['password']:
+            if res['Tag'] == user['Tag']:
                 return True
             else:
                 return False
@@ -31,7 +31,7 @@ class AuthDB:
     def user_status(self, user):
         try:
             res = self.collection.find_one(user)
-            return res['status']  # placeholder status field, may change later
+            return res['Status']  # placeholder status field, may change later
         except:
             return 'Attempt to access user status failed.'  # placeholder error message
 
@@ -41,7 +41,7 @@ class AuthDB:
             res = self.collection.find_one(user)
         except:
             return 'User not found in database.'
-        self.collection.update_one(user, {'$set': {'status': new_status}})
+        self.collection.update_one(user, {'$set': {'Status': new_status}})
         return 'Updated ' + str(user) + ' status to ' + str(new_status)
 
     # clears the database, this can be used to remove duplicate objects in the database when testing
