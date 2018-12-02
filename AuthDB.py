@@ -17,23 +17,32 @@ class AuthDB:
             return 'Error'
         return 'Successfully added ' + str(data)
 
-    def find_user(self, data):
+    def find_user(self, user):
         try:
-            res = self.collection.find_one(data)  # attempt to find data in db
+            res = self.collection.find_one(user)  # attempt to find data in db
             # ensure all aspects of login information match
-            if res['username'] == data['username'] and res['password'] == data['password']:
+            if res['username'] == user['username'] and res['password'] == user['password']:
                 return True
             else:
                 return False
         except:
             return False
 
-    def user_status(self, data):
+    def user_status(self, user):
         try:
-            res = self.collection.find_one(data)
+            res = self.collection.find_one(user)
             return res['status']  # placeholder status field, may change later
         except:
             return 'Attempt to access user status failed.'  # placeholder error message
+
+    # updates a user's status
+    def change_status(self, user, new_status):
+        try:
+            res = self.collection.find_one(user)
+        except:
+            return 'User not found in database.'
+        self.collection.update_one(user, {'$set': {'status': new_status}})
+        return 'Updated ' + str(user) + ' status to ' + str(new_status)
 
     # clears the database, this can be used to remove duplicate objects in the database when testing
     def clear_db(self):
