@@ -1,0 +1,9 @@
+Command Line Arguments
+
+worker.py
+-cip => client ip address
+-dip => database ip address
+-s   => seat/station identifier
+
+RFID.py
+-c => color of the station
