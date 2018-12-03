@@ -11,6 +11,7 @@ import pika
 import sys
 import MFRC522
 import RPi.GPIO as GPIO
+import json
 
 from time import sleep
 from selenium import webdriver
@@ -76,7 +77,7 @@ while(continue_reading):
 
     channel.basic_publish(exchange='',
                           routing_key='RFID_Queue',
-                          body=body,
+                          body=json.dumps(body),
                           properties=pika.BasicProperties(
                           delivery_mode = 2, # make message persistent
                         ))
