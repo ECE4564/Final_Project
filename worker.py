@@ -2,8 +2,13 @@
 import pika
 import time
 import requests
+import argparse 
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+client_ip = "0.0.0.0"
+parser = argparse.ArgumentParser()
+parser.add_argument('-ip', dest='client_ip',required = True, help='Setting the client IP')
+credentials = pika.PlainCredentials('team25','team25')
+connection = pika.BlockingConnection(pika.ConnectionParameters(host=client_ip,credentials=credentials))
 channel = connection.channel()
 
 channel.queue_declare(queue='RFID_Queue', durable=True)
