@@ -7,11 +7,13 @@ import argparse
 import json
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-cip', dest='client_pi',help='ip address')
-parser.add_argument('-dip', dest='database_pi',help='ip address')
+parser.add_argument('-cip', dest='client_pi',help='client ip address')
+parser.add_argument('-dip', dest='database_pi',help='database ip address')
+parser.add_argument('-s', dest='seat',help='seat number')
 args = parser.parse_args()
 client_ip = args.client_pi
 database_ip = args.database_pi
+seat = args.seat
 
 
 credentials = pika.PlainCredentials('team25','team25')
@@ -38,11 +40,12 @@ def callback(ch, method, properties, body):
 
     if(r.ok):
         print(r.content)
+        info = r.json
     else:
         print(r.status_code)
 
     # Update the global variables in the Flask App
-    r = requests.put('http://'+client_ip+':5000/update_info', json={'Color': color})
+    r = requests.put('http://'+client_ip+':5000/update_info', json={'Color': color, 'Seat': seat, 'Name': info['Name']})
 
     if(r.ok):
         print(r.content)
