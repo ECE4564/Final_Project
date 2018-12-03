@@ -83,7 +83,9 @@ while(continue_reading):
                         ))
     print(strftime("[%H:%M:%S] ", gmtime()) + " [x] Sent " + tag)
 
-    driver.get("http://localhost:5000/login?color=blue&name="+tag+"&seat=B4")
+    sleep(2)
+
+    driver.get("http://localhost:5000/login")
     
     sleep(5)
 
