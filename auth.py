@@ -21,11 +21,13 @@ def change_user_status():
         content = request.json
         print(str(content))
         res = db.change_status({'Tag': content['Tag']}, content['Status'])
-        print(res)
+        #print(res)
         print(res['Name'])
         #temp = jsonify(res)
         print('before return')
-        return res
+        del res['_id']
+        print(res)
+        return json.dumps(res)
     except:
         print('before except')
         return 'Error in change_user_status()'
