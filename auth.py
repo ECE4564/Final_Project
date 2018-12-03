@@ -23,9 +23,9 @@ def change_user_status():
         res = db.change_status({'Tag': content['Tag']}, content['Status'])
         print(res)
         print(res['Name'])
-        temp = jsonify(res)
+        #temp = jsonify(res)
         print('before return')
-        return temp
+        return res
     except:
         print('before except')
         return 'Error in change_user_status()'
