@@ -5,6 +5,7 @@ import requests
 import argparse 
 #from LED import LED_random 
 import json
+from LED import LED_random
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-cip', dest='client_pi',help='client ip address')
@@ -14,7 +15,7 @@ args = parser.parse_args()
 client_ip = args.client_pi
 database_ip = args.database_pi
 seat = args.seat
-
+led = LED_random("red")
 
 credentials = pika.PlainCredentials('team25','team25')
 connection = pika.BlockingConnection(pika.ConnectionParameters(host=client_ip,credentials=credentials))
@@ -41,6 +42,7 @@ def callback(ch, method, properties, body):
     if(r.ok):
         print(r.content)
         info = r.json
+        led.flashLED();
     else:
         print(r.status_code)
 

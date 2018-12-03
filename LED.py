@@ -14,7 +14,7 @@ GPIO.setup(green,GPIO.OUT)
 GPIO.setup(blue,GPIO.OUT)
 
 class LED_random:
-    def __init__(self, size, stop,color):
+    def __init__(self, color):
         self.color = color
 
     def flashLED(self):
@@ -83,4 +83,4 @@ class LED_random:
         # Turn off every LED
         GPIO.output(red, GPIO.LOW)
         GPIO.output(green, GPIO.LOW)
-GPIO.output(blue, GPIO.LOW)
+        GPIO.output(blue, GPIO.LOW)
