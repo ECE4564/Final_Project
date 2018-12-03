@@ -16,7 +16,7 @@ def login():
     global color, name, seat
     print(color + ' ' + name + ' ' + seat)
 
-    return render_template("login.html", color=color, name=name)
+    return render_template("login.html", color=color, name=name, seat=seat)
 
 @app.route("/update_info", methods=['PUT'])
 def info():
