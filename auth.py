@@ -22,7 +22,7 @@ def change_user_status():
         print(str(content))
         res = db.change_status({'Tag': content['Tag']}, content['Status'])
         print(res)
-        return res
+        return json.dumps(res)
     except:
         return 'Error in change_user_status()'
 
