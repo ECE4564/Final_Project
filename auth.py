@@ -24,8 +24,10 @@ def change_user_status():
         print(res)
         print(res['Name'])
         temp = jsonify(res)
+        print('before return')
         return temp
     except:
+        print('before except')
         return 'Error in change_user_status()'
 
 
