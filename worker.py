@@ -22,6 +22,7 @@ def callback(ch, method, properties, body):
     ch.basic_ack(delivery_tag = method.delivery_tag)
     # issue request to change user status in AuthDB
     r = requests.put('', data={'Status': '1'})  # set user status to 1 == logged in
+    print(r.text)
 
 
 channel.basic_qos(prefetch_count=1)
