@@ -8,11 +8,12 @@ import signal
 
 app = Flask(__name__)
 
-@app.route('/add', methods=['POST'])
-def add():
+
+@app.route('/add_user', methods=['POST'])
+def add_user():
     try:
         content = request.json
-        res = db.add_user(content)
+        res = db.insert(content)
         return res
     except:
         return 'Error in add()'
@@ -30,3 +31,4 @@ def change_user_status():
 
 if __name__ == '__main__':
     db = AuthDB.AuthDB()
+    app.run(host='0.0.0.0')
