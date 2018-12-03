@@ -83,4 +83,4 @@ class LED_random:
         # Turn off every LED
         GPIO.output(red, GPIO.LOW)
         GPIO.output(green, GPIO.LOW)
-GPIO.output(blue, GPIO.LOW)
+        GPIO.output(blue, GPIO.LOW)
