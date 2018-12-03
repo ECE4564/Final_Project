@@ -12,13 +12,17 @@ import sys
 import MFRC522
 import RPi.GPIO as GPIO
 import json
+import argparse 
 
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from time import sleep, gmtime, strftime
 
-color = "blue"
+parser = argparse.ArgumentParser()
+parser.add_argument('-c', dest='color',help='station color')
+args = parser.parse_args()
+color = args.color
 
 # Initialize RabbitMQ queue connection
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))

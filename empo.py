@@ -29,6 +29,8 @@ def info():
     color = info['Color']
     name = info['Name']
     seat = info['Seat']
+
+    return "Success"
     
 
 if __name__ == "__main__":
