@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import json
 import AuthDB
 
@@ -22,7 +22,7 @@ def change_user_status():
         print(str(content))
         res = db.change_status({'Tag': content['Tag']}, content['Status'])
         print(res)
-        return json.dumps(res)
+        return jsonify(res)
     except:
         return 'Error in change_user_status()'
 

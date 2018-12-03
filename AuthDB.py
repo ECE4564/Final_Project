@@ -22,7 +22,7 @@ class AuthDB:
             res = self.collection.find_one(user)  # attempt to find data in db
             # ensure all aspects of login information match
             if res['Tag'] == user['Tag']:
-                return True
+                return res
             else:
                 return False
         except:
@@ -42,8 +42,9 @@ class AuthDB:
         except:
             return 'User not found in database.'
         self.collection.update_one(user, {'$set': {'Status': str(new_status)}})
-        print()
-        return 'Updated ' + str(user) + ' status to ' + str(new_status)
+        #return 'Updated ' + str(user) + ' status to ' + str(new_status)
+        res = self.collection.find_one(user)
+        return res
 
     # clears the database, this can be used to remove duplicate objects in the database when testing
     def clear_db(self):
