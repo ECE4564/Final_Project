@@ -1,10 +1,6 @@
 from flask import Flask, request, jsonify
 import json
 import AuthDB
-import logging
-import socket
-import sys
-import signal
 
 app = Flask(__name__)
 
@@ -23,7 +19,9 @@ def add_user():
 def change_user_status():
     try:
         content = request.json
-        res = db.change_status(content['Tag'], content['Status'])
+        print(str(content))
+        res = db.change_status({'Tag': content['Tag']}, content['Status'])
+        print(res)
         return res
     except:
         return 'Error in change_user_status()'
