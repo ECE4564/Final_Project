@@ -42,9 +42,8 @@ class AuthDB:
         except:
             return 'User not found in database.'
         self.collection.update_one(user, {'$set': {'Status': str(new_status)}})
-        print('Updated ' + str(user) + ' status to ' + str(new_status))
-        return_data = self.collection.find_one(user)
-        return return_data
+        print()
+        return 'Updated ' + str(user) + ' status to ' + str(new_status)
 
     # clears the database, this can be used to remove duplicate objects in the database when testing
     def clear_db(self):
