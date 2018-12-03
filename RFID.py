@@ -17,6 +17,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from time import sleep, gmtime, strftime
 
+color = "blue"
+
 # Initialize RabbitMQ queue connection
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
 channel = connection.channel()
@@ -69,10 +71,12 @@ driver.get("http://localhost:5000/")
 while(continue_reading):
     # Get the RFID tag when one appears
     tag = read()
+    
+    body = {'Tag': tag, 'Color': color}
 
     channel.basic_publish(exchange='',
                           routing_key='RFID_Queue',
-                          body=tag,
+                          body=body,
                           properties=pika.BasicProperties(
                           delivery_mode = 2, # make message persistent
                         ))
