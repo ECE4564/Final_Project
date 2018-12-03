@@ -7,12 +7,15 @@ import argparse
 import json
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-ip', dest='client_pi',help='ip address')
+parser.add_argument('-cip', dest='client_pi',help='ip address')
+parser.add_argument('-dip', dest='database_pi',help='ip address')
 args = parser.parse_args()
 client_ip = args.client_pi
+database_ip = args.database_pi
+
 
 credentials = pika.PlainCredentials('team25','team25')
-connection = pika.BlockingConnection(pika.ConnectionParameters(host="172.29.38.28",credentials=credentials))
+connection = pika.BlockingConnection(pika.ConnectionParameters(host=client_ip,credentials=credentials))
 channel = connection.channel()
 
 channel.queue_declare(queue='RFID_Queue', durable=True)
@@ -29,15 +32,25 @@ def callback(ch, method, properties, body):
     print(color)
     #LED_random.flashLED(color)
     time.sleep(body.count(b'.'))
-    print(" [x] Done")
-    ch.basic_ack(delivery_tag = method.delivery_tag)
+    
     # issue request to change user status in AuthDB
-    r = requests.put('http://172.29.47.154:5000/change_status', json={'Tag': tag, 'Status': 1})  # set user status to 1 == logged in
+    r = requests.put('http://'+database_ip+':5000/change_status', json={'Tag': tag, 'Status': 1})  # set user status to 1 == logged in
 
     if(r.ok):
         print(r.content)
     else:
         print(r.status_code)
+
+    # Update the global variables in the Flask App
+    r = requests.put('http://'+client_ip+':5000/update_info', json={'Color': color})
+
+    if(r.ok):
+        print(r.content)
+    else:
+        print(r.status_code)
+
+    ch.basic_ack(delivery_tag = method.delivery_tag)
+    print(" [x] Done")
 
 channel.basic_qos(prefetch_count=1)
 channel.basic_consume(callback,
