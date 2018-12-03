@@ -8,3 +8,9 @@ curl --header "Content-Type: application/json" \
 	 --data "{\"Tag\": \"165.177.144.27\", \"Status\": \"0\"}" \
 	 http://$IP:$PORT/add_user
 echo ""
+
+curl --header "Content-Type: application/json" \
+	 --request POST \
+	 --data "{\"Tag\": \"126.227.175.133\", \"Status\": \"0\"}" \
+	 http://$IP:$PORT/add_user
+echo ""
