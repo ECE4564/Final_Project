@@ -8,6 +8,15 @@ import signal
 
 app = Flask(__name__)
 
+@app.route('/add', methods=['POST'])
+def add():
+    try:
+        content = request.json
+        res = db.add_user(content)
+        return res
+    except:
+        return 'Error in add()'
+
 
 @app.route('/change_status', methods=['PUT'])
 def change_user_status():
